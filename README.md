@@ -7,7 +7,7 @@ Interactive implementation of OpenCV GrabCut
 from grabcut3 import GrabCut
 #Create a GrabCut object
 gc = GrabCut()
-gc.load_image('D:/Documents/CICATA/Research_Project/GoPro/Undistorted_Frames/Set2/GOPR6219/000048.jpg')
+gc.load_image('avengers.jpg')
 gc.matte()
 ```
 
