@@ -25,10 +25,11 @@ e: exit
 3: mark probable foreground
 +: increase size of brush
 -: decrease size of brush
+c: Crop ROI
 ```
 
 You can also specify the name of the resulting image and mask, and its output directory
 
 ```python
-g.output_params(out_dir='Output/Directory/', mask_name='MaskName0', img_name='ImageName0')
+gc.output_params(out_dir='Output/Directory/', mask_name='MaskName0', img_name='ImageName0')
 ```
