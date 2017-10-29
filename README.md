@@ -15,7 +15,7 @@ gc.matte()
 Once you have executed the matte() method there are several options available:
 
 ```
-r: reset the image and al grabcut parameters
+r: reset the image and all grabcut parameters
 n: run grabcut algorithm to matte the image
 s: save the results
 e: exit
