@@ -293,7 +293,7 @@ class GrabCut(object):
         """
         Activate or deactivate roi crop
         """
-        if self.rect_over==False
+        if self.rect_over==False:
           if self.crop_roi:
             self.crop_roi = False
           else:
@@ -301,4 +301,4 @@ class GrabCut(object):
 
           print('Crop ROI ',self.crop_roi)
         else:
-          print('Rectangle already drawn. \nReset("r") the parameters to use this function
+          print('Rectangle already drawn. \nReset("r") the parameters to use this function')
