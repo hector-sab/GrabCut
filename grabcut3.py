@@ -4,7 +4,7 @@
                   GrabCut!
 ===============================================
 
-Interactive Image Segmentation using GrabCut cv2 algorithm.
+Interactive Image Segmentation using GrabCut's cv2 algorithm.
 
 Press ESC to exit the Matting
 
