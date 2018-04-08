@@ -30,6 +30,9 @@ class GrabCut:
     self.gc_mask = None
     self.gc_mask2 = None
 
+    self.im_final_matted = None
+    self.final_mask = None
+
     self.IMAGE_LOADED = False
     self.ROI_SELECTED = False
     self.LBUTTON_DOWN = False
@@ -44,12 +47,26 @@ class GrabCut:
     self.BGMODEL = np.zeros((1,65),dtype=np.float64)
     self.FGMODEL = np.zeros((1,65),dtype=np.float64)
 
+    self.save_path = None
+
   def load_image(self,path):
     self.im_original = cv2.imread(path)
+    self.im_final_matted = np.zeros_like(self.im_original)
+    self.final_mask = np.zeros_like(self.im_final_matted[:,:,0])
     self.im_front = self.im_original.copy()
     self.IMAGE_LOADED = True
+  
+  def set_output(self,direct=None,name=None):
+    if not direct:
+      direct = ''
+    if not name:
+      name = 'image'
+    self.save_path = direct+name
 
   def runme(self):
+    if not self.save_path:
+      self.set_output()
+
     if self.IMAGE_LOADED:
       WIN_NAME_1 = 'Original Image'
       WIN_NAME_2 = 'ROI'
@@ -87,7 +104,7 @@ class GrabCut:
       cv2.destroyAllWindows()
       exit()
     
-    elif k ==ord('s'):
+    elif k ==ord('r'):
       print('Starting Matting')
 
       if self.GC_REC:
@@ -118,6 +135,37 @@ class GrabCut:
     elif k==ord('-'): # smaller line thickness
       if self.THICKNESS>1:
         self.THICKNESS -= 1
+    
+
+    elif k==ord('s'):
+      print('Saving Matted and Mask')
+      mask = self.mask.copy()
+      mask[mask!=0] = 255
+      """
+      # Smooth borders
+      mask = cv2.pyrUp(mask)
+      
+      for _ in range(5):
+        mask = cv2.medianBlur(mask,7)
+      
+      mask = cv2.pyrDown(mask)
+      mask[mask!=0] = 1
+
+      nmask = np.zeros(shape=(mask.shape[0],mask.shape[1],3))
+      for i in range(3):
+        nmask[:,:,i] = mask
+      """
+
+      self.im_final_matted[self.ROI[0][1]:self.ROI[1][1],
+      self.ROI[0][0]:self.ROI[1][0]] = self.im_matted
+      
+      self.final_mask[self.ROI[0][1]:self.ROI[1][1],
+      self.ROI[0][0]:self.ROI[1][0]] = mask
+
+      cv2.imwrite(self.save_path+'_matting.png',self.im_final_matted)
+      cv2.imwrite(self.save_path+'_mask.png',self.final_mask)
+      print('All done!')
+
 
   
   def onMouse(self,event,x,y,flags,params):
