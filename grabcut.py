@@ -47,9 +47,13 @@ class GrabCut:
     self.BGMODEL = np.zeros((1,65),dtype=np.float64)
     self.FGMODEL = np.zeros((1,65),dtype=np.float64)
 
+    self.LOOP = True
+
+    self.path = None
     self.save_path = None
 
   def load_image(self,path):
+    self.path = path
     self.im_original = cv2.imread(path)
     self.im_final_matted = np.zeros_like(self.im_original)
     self.final_mask = np.zeros_like(self.im_final_matted[:,:,0])
@@ -76,7 +80,7 @@ class GrabCut:
 
       WIN_TYPE = cv2.WINDOW_GUI_NORMAL
 
-      while True:
+      while self.LOOP:
         if not self.ROI_SELECTED:
           cv2.namedWindow(WIN_NAME_1,WIN_TYPE)
           cv2.setMouseCallback(WIN_NAME_1,self.onMouse)
@@ -87,6 +91,8 @@ class GrabCut:
           cv2.namedWindow(WIN_NAME_3,WIN_TYPE)
           cv2.namedWindow(WIN_NAME_4,WIN_TYPE)
           cv2.namedWindow(WIN_NAME_5,WIN_TYPE)
+
+          cv2.resizeWindow(WIN_NAME_1,900,900)
 
           cv2.setMouseCallback(WIN_NAME_2,self.onMouse)
           cv2.imshow(WIN_NAME_2,self.im_front)
@@ -104,6 +110,10 @@ class GrabCut:
       cv2.destroyAllWindows()
       exit()
     
+    elif k==ord('n'):
+      cv2.destroyAllWindows()
+      self.LOOP = False
+
     elif k ==ord('r'):
       print('Starting Matting')
 
